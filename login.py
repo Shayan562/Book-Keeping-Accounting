@@ -32,7 +32,6 @@ def getCredentialsFromFile():
 def valueCheck(storedValues, username, password, flag):
     for i in storedValues:
         if(i.name==username):
-            print(i.flag)
             if(i.flag=="True"):
                 i.flag=flag
                 return True, storedValues
@@ -82,13 +81,3 @@ def login():
                 window.Element("-display_msg-").update("Incorrect Username or Password")
 
     window.close()
-
-def fun():
-    if __name__=="__main__":
-        login()
-
-fun()
-
-
-# val=openFile()
-# for i in val:
