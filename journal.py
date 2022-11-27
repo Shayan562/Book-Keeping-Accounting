@@ -73,10 +73,23 @@ def isSameDate(oldEntry, date, month, year):
 
 def saveToFile(allEntries):
     month=allEntries[0][0]
-    month=month[month.find('/')+1:month.find('/',2)]
+    month=month[month.find('-')+1:month.find('-',2)]
     if(month.isdigit()):
         allMonths=['January','February','March','April','May','June','July','August','September','October','November','December']
         month=allMonths[month-1] 
+
+    # debTotal=0
+    # credTotal=0
+    # for i in allEntries:
+
+    #     if(i[2]!='-'):
+    #         debTotal+=int(i[2])
+    #     if(i[3]!='-'):
+    #         credTotal+=int(i[3])
+
+    # allEntries.append([' ','Total =',str(debTotal),str(credTotal)])
+    # print("debTotal: "+str(debTotal))
+    # print("credTotal: "+str(credTotal))
 
     with open("./"+month+' General Journal.csv', mode='w', newline='') as file:
         csvFile=csv.writer(file)
@@ -103,7 +116,7 @@ def createGeneralJournal():
                  sg.Text("Amount"), sg.InputText(size=(12,1), key="-amount_credit-", do_not_clear=False)],
                 [sg.Button('Add' , key="-add_credit-" ,size=(26,1),pad=((137,0),(2,2)) )] ,
 
-                [sg.Button("Generate Trial Balance", k='-generate_trial_balance-', size=(30,1), pad=((122,0),(15,2)) )]
+                [sg.Button("Done", k='-generate_trial_balance-', size=(30,1), pad=((122,0),(15,2)) )]
              ]
     generalJournalEntry=Entry(0,0,0)          # for storing all the different entries
     allEntries=[]
@@ -152,5 +165,6 @@ def createGeneralJournal():
 
     window.close()
     saveToFile(allEntries)
-    print(allEntries)
+    # print(allEntries)
+    return allEntries
 # createGeneralJournal()
