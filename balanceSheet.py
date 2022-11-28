@@ -1,30 +1,6 @@
 import csv
 
-# trialBalance=[['Cash', 8270, '-'],
-# ['Common Stock', '-', 79000],
-# ['Office Supplies', 1000, '-'],
-# ['Furniture', 1300, '-'],
-# ['Account Payable', '-', 2200],
-# ['Service Revenue', '-', 5100],
-# ['Building', 80000, '-'],
-# ['Land', 29000, '-'],
-# ['Note Payable', '-', 39000],
-# ['Account Receivable', 1500, '-'],
-# ['Salary Expense', 1130, '-'],
-# ['Utility Expense', 450, '-'],
-# ['Utility Payable', '-', 450],
-# ['Rent Expense', 1000, '-'],
-# ['Dividends', 2100, '-'],
-# ['Total =', '201980', '201980']]
-
-# retainEarnings=[['Retain Earnings', '0'],
-# ['Net Profit', '2520'],
-# ['Dividends', '(2100)'],
-# ['Ending Balance of Retained Earning', 420]]
-
-# month='jan'
-
-def saveToFile(allEntries, month):
+def saveToFile(allEntries ,month):
     with open("./"+month+' Balance Sheet.csv', mode='w', newline='') as file:
         csvFile=csv.writer(file)
         # csvFile.writerow(['Description','Debit'])
@@ -53,7 +29,7 @@ def isEquity(entry):
             return True
     return False
 
-def balanceSheet(trialBalance, month):
+def balanceSheet(trialBalance, retainEarning ,month):
     assets=[['Assets']]
     liabilities=[['Liabilities']]
     ownersEquity=[['Owners Equity']]
@@ -87,16 +63,22 @@ def balanceSheet(trialBalance, month):
             else:
                 ownersEquity.append(entry)
                 totalEquity+=int(entry[2])
+    valRetain=str(retainEarning)
+    if(not(valRetain.isdigit())):
+        valRetain=-1*int(valRetain[1:-1])
+    ownersEquity.append(['Ending Balance of Retain Earning','-',retainEarning])
+    print(valRetain)
+    totalEquity+=int(valRetain)
 
     total+=totalAssets
     total+=totalLiabilities
     total+=totalEquity
     if(totalAssets<0):
-        totalAssets='('+str(totalAssets)+')'
+        totalAssets='('+str(-1*totalAssets)+')'
     if(totalLiabilities<0):
-        totalLiabilities='('+str(totalLiabilities)+')'
+        totalLiabilities='('+str(-1*totalLiabilities)+')'
     if(totalEquity<0):
-        totalEquity='('+str(totalEquity)+')'
+        totalEquity='('+str(-1*totalEquity)+')'
     assets.append(['', 'Total Assets', totalAssets])
     liabilities.append(['', 'Total Liabilities', totalLiabilities])
     ownersEquity.append(['', 'Total Equity', totalEquity])
@@ -108,12 +90,3 @@ def balanceSheet(trialBalance, month):
         balance.append(values)
 
     saveToFile(balance, month)
-
-    for i in balance:
-        print(i)
-
-
-        
-
-
-# balanceSheet(trialBalance, month)

@@ -12,5 +12,5 @@ if __name__=='__main__':
     trial, month=trialBalance.trial(generalJournal)
     netIncome=incomeStatement.createIncomeStatement(trial, month)
     ownersEquity.createOwnersEquity(trial, netIncome, month)
-    retainEarning.createRetainEarning(trial, netIncome, month)
-    balanceSheet.balanceSheet(trial, month)
+    retain=retainEarning.createRetainEarning(trial, netIncome, month)
+    balanceSheet.balanceSheet(trial, retain ,month)

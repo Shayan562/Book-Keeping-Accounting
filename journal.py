@@ -66,36 +66,28 @@ class Entry:
             entry.append([dateStr, i.description, "-", str(i.amount)])
         return entry
 
-
 def isSameDate(oldEntry, date, month, year):
     return (oldEntry.date==date and oldEntry.month==month and oldEntry.year==year)
 
+def convertCredit(allEntries):
+    newList=[['Date','Description','Debit','Credit']]
+    for i in allEntries:
+        if(i[2]=='-'):
+            newList.append([i[0],'\t\t'+i[1], i[2], i[3]])
+        else:
+            newList.append(i)
+    return newList
 
 def saveToFile(allEntries):
     month=allEntries[0][0]
     month=month[month.find('-')+1:month.find('-',2)]
     if(month.isdigit()):
         allMonths=['January','February','March','April','May','June','July','August','September','October','November','December']
-        month=allMonths[month-1] 
-
-    # debTotal=0
-    # credTotal=0
-    # for i in allEntries:
-
-    #     if(i[2]!='-'):
-    #         debTotal+=int(i[2])
-    #     if(i[3]!='-'):
-    #         credTotal+=int(i[3])
-
-    # allEntries.append([' ','Total =',str(debTotal),str(credTotal)])
-    # print("debTotal: "+str(debTotal))
-    # print("credTotal: "+str(credTotal))
+        month=allMonths[int(month)-1] 
 
     with open("./"+month+' General Journal.csv', mode='w', newline='') as file:
         csvFile=csv.writer(file)
-        csvFile.writerow(['Date','Description','Debit','Credit'])
-        csvFile.writerows(allEntries)
-
+        csvFile.writerows(convertCredit(allEntries))
 
 def createGeneralJournal():
     sg.theme('DarkAmber')   # Add a touch of color
@@ -165,6 +157,4 @@ def createGeneralJournal():
 
     window.close()
     saveToFile(allEntries)
-    # print(allEntries)
     return allEntries
-# createGeneralJournal()
